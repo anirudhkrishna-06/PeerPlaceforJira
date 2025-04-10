@@ -26,7 +26,8 @@ const {
   getSubmissionByStudent,
   getSubmissionsByAssignment,
   updateScore,
-  addQuestionToBank
+  addQuestionToBank,
+  getQuestionBank
 } = require('C:/Users/aksha/peer-place-for-jira/backend/firestoreControllers.js');
 
 // Load environment variables
@@ -61,6 +62,8 @@ app.get('/api/submissions/student', getSubmissionByStudent);
 app.get('/api/submissions/byAssignment/:assignmentId', getSubmissionsByAssignment);
 app.post('/api/updateScore', updateScore);
 app.post('/api/questionbank', addQuestionToBank);
+app.get('/api/questionbank', getQuestionBank);
+
 // Start server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

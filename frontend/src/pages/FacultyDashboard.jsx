@@ -173,38 +173,13 @@ function FacultyDashboard() {
 
         {/* Pending Submissions Section */}
         <div className="section submissions-section">
-          <h3>Pending Evaluations</h3>
-          {pendingSubmissions.length > 0 ? (
-            <table className="submissions-table">
-              <thead>
-                <tr>
-                  <th>Assignment</th>
-                  <th>Student</th>
-                  <th>Submitted On</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {pendingSubmissions.map(submission => (
-                  <tr key={submission.id}>
-                    <td>{submission.assignmentTitle}</td>
-                    <td>{submission.studentName}</td>
-                    <td>{new Date(submission.submittedAt).toLocaleDateString()}</td>
-                    <td>
-                      <button 
-                        onClick={() => handleEvaluateSubmission(submission.id)}
-                        className="evaluate-btn"
-                      >
-                        Evaluate
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          ) : (
-            <p>No pending submissions</p>
-          )}
+        <button
+  onClick={() => navigate('/question-bank')}
+  className="action-btn"
+>
+  View Question Bank
+</button>
+
         </div>
 
         {/* Quick Stats Section */}
