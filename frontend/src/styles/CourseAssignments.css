@@ -1,0 +1,56 @@
+.assignments-page {
+    padding: 2rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  .assignments-page h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    color: #333;
+  }
+  
+  .loading,
+  .error {
+    font-size: 1.2rem;
+    color: #666;
+  }
+  
+  .assignments-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .assignment-card {
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    padding: 1.2rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+  }
+  
+  .assignment-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+  }
+  
+  .assignment-card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 0.6rem;
+    color: #222;
+  }
+  
+  .assignment-card p {
+    margin: 0.4rem 0;
+    font-size: 0.95rem;
+    color: #555;
+  }
+  
+  @media (max-width: 600px) {
+    .assignments-list {
+      grid-template-columns: 1fr;
+    }
+  }
+  

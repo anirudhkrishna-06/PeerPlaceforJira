@@ -1,168 +1,146 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { useNavigate, useLocation } from 'react-router-dom';
-import "../styles/Assignment.css";
+import '../styles/Assignment.css';
 
-const API_URL = "http://localhost:5000";
+const API_URL = 'http://localhost:5000';
 
-function Assignment() {
+const Assignment = () => {
+  const { assignmentId } = useParams();
   const [assignment, setAssignment] = useState(null);
-  const [relatedDocument, setRelatedDocument] = useState(null);
+  const [submission, setSubmission] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const location = useLocation();
-  const navigate = useNavigate();
+  const [submissionText, setSubmissionText] = useState('');
+  const [message, setMessage] = useState('');
+
+  const email = localStorage.getItem('email');
+  const authToken = localStorage.getItem('authToken');
 
   useEffect(() => {
-    const fetchAssignmentData = async () => {
+    const fetchAssignmentAndSubmission = async () => {
       try {
-        setLoading(true);
-        const authToken = localStorage.getItem('authToken');
-        
-        // Check if we have assignment data passed via state
-        const assignmentFromState = location.state?.assignment;
-        
-        if (assignmentFromState) {
-          setAssignment(assignmentFromState);
-          
-          // Fetch related document if attachment exists
-          if (assignmentFromState.attachments?.length > 0) {
-            const docResponse = await axios.get(
-              `${API_URL}/api/documents/${assignmentFromState.attachments[0].id}`,
-              {
-                headers: { 'Authorization': `Bearer ${authToken}` }
-              }
-            );
-            setRelatedDocument(docResponse.data);
-          }
-        } else {
-          // If no state, fetch from API using assignmentId in URL
-          const assignmentId = window.location.pathname.split('/').pop();
-          const response = await axios.get(
-            `${API_URL}/api/assignments/${assignmentId}`,
-            {
-              headers: { 'Authorization': `Bearer ${authToken}` }
-            }
-          );
-          
-          setAssignment(response.data.assignment);
-          
-          if (response.data.relatedDocument) {
-            setRelatedDocument(response.data.relatedDocument);
-          }
+        const res = await axios.get(`${API_URL}/api/assignments/${assignmentId}`, {
+          headers: { Authorization: `Bearer ${authToken}` },
+        });
+
+        const data = res.data;
+        const formatted = {
+          ...data,
+          dueDate: data.dueDate?.seconds
+            ? new Date(data.dueDate.seconds * 1000)
+            : new Date(data.dueDate),
+          createdAt: data.createdAt?.seconds
+            ? new Date(data.createdAt.seconds * 1000)
+            : new Date(data.createdAt),
+        };
+        setAssignment(formatted);
+
+        const subRes = await axios.get(`${API_URL}/api/submissions/student`, {
+          params: {
+            assignmentId,
+            studentEmail: email,
+          },
+          headers: { Authorization: `Bearer ${authToken}` },
+        });
+
+        if (subRes.status === 200) {
+          setSubmission(subRes.data.submission);
         }
-        
-        setLoading(false);
       } catch (err) {
-        console.error('Error fetching assignment:', err);
-        setError(err.response?.data?.message || err.message || 'Failed to load assignment');
+        if (err.response?.status === 404) {
+          // No submission found — okay
+        } else {
+          console.error('Error loading assignment or submission:', err);
+          setMessage('Failed to load assignment.');
+        }
+      } finally {
         setLoading(false);
       }
     };
 
-    fetchAssignmentData();
-  }, [location]);
+    fetchAssignmentAndSubmission();
+  }, [assignmentId, email, authToken]);
 
-  const handleBack = () => {
-    navigate(-1); // Go back to previous page
-  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!submissionText.trim()) return setMessage('Please enter your answer.');
 
-  const downloadDocument = () => {
-    if (relatedDocument?.fileUrl) {
-      window.open(relatedDocument.fileUrl, '_blank');
+    try {
+      await axios.post(`${API_URL}/api/submitAssignment`, {
+        assignmentId,
+        studentEmail: email,
+        answer: submissionText,
+      }, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+
+      setMessage('Submitted successfully!');
+      setSubmission({ answer: submissionText, score: 0, submittedAt: new Date() });
+      setSubmissionText('');
+    } catch (error) {
+      console.error('Submission error:', error);
+      setMessage('Submission failed.');
     }
   };
 
-  if (loading) {
-    return (
-      <div className="loading-container">
-        <div className="loading-spinner"></div>
-        <p>Loading assignment details...</p>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="error-container">
-        <div className="error-icon">⚠️</div>
-        <h3>Error Loading Assignment</h3>
-        <p>{error}</p>
-        <button onClick={handleBack} className="back-btn">
-          Back to Dashboard
-        </button>
-      </div>
-    );
-  }
-
-  if (!assignment) {
-    return (
-      <div className="not-found-container">
-        <h2>Assignment Not Found</h2>
-        <button onClick={handleBack} className="back-btn">
-          Back to Dashboard
-        </button>
-      </div>
-    );
-  }
+  if (loading) return <div>Loading assignment...</div>;
+  if (!assignment) return <div>{message || 'Assignment not found'}</div>;
 
   return (
-    <div className="assignment-container">
-      <div className="assignment-header">
-        <button onClick={handleBack} className="back-btn">
-          &larr; Back
-        </button>
-        <h1>{assignment.title}</h1>
-      </div>
-      
-      <div className="assignment-details">
-        <div className="detail-section">
-          <h2>Details</h2>
-          <div className="detail-grid">
-            <div className="detail-item">
-              <strong>Course:</strong> {assignment.courseName || 'N/A'}
-            </div>
-            <div className="detail-item">
-              <strong>Faculty:</strong> {assignment.facultyName || 'N/A'}
-            </div>
-            <div className="detail-item">
-              <strong>Status:</strong> 
-              <span className={`status-badge ${assignment.status || 'active'}`}>
-                {assignment.status || 'active'}
-              </span>
-            </div>
-            <div className="detail-item">
-              <strong>Due Date:</strong> 
-              {new Date(assignment.dueDate?.toDate?.() || assignment.dueDate).toLocaleString()}
-            </div>
-          </div>
+    <div className="assignment-detail">
+      <h1>{assignment.title}</h1>
+      <p><strong>Course:</strong> {assignment.courseName || 'N/A'}</p>
+      <p><strong>Instructor:</strong> {assignment.facultyName}</p>
+      <p><strong>Due:</strong> {assignment.dueDate.toLocaleString()}</p>
+      <p><strong>Status:</strong> {assignment.status}</p>
+      <hr />
+      <h3>Description</h3>
+      <pre className="assignment-description">{assignment.description}</pre>
+
+      {assignment.attachments?.length > 0 && (
+        <div>
+          <h4>Attachments:</h4>
+          <ul>
+            {assignment.attachments.map((url, idx) => (
+              <li key={idx}>
+                <a href={url} target="_blank" rel="noopener noreferrer">
+                  Attachment {idx + 1}
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
-        
-        <div className="description-section">
-          <h2>Description</h2>
-          <p>{assignment.description || 'No description provided.'}</p>
+      )}
+
+      <hr />
+
+      {submission ? (
+        <div className="submission-box">
+          <h4>Your Submission:</h4>
+          <pre>{submission.answer}</pre>
+          <p><strong>Submitted At:</strong> {new Date(submission.submittedAt?.seconds ? submission.submittedAt.seconds * 1000 : submission.submittedAt).toLocaleString()}</p>
+          <p><strong>Score:</strong> {submission.score}</p>
         </div>
-        
-        {relatedDocument && (
-          <div className="document-section">
-            <h2>Related Document</h2>
-            <div className="document-card" onClick={downloadDocument}>
-              <div className="document-icon">
-                <i className="fas fa-file-alt"></i>
-              </div>
-              <div className="document-info">
-                <h3>{relatedDocument.name}</h3>
-                <p>{relatedDocument.type} • {Math.round(relatedDocument.size / 1024)} KB</p>
-              </div>
-              <div className="download-btn">
-                <i className="fas fa-download"></i>
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
+      ) : (
+        <form onSubmit={handleSubmit} className="submission-form">
+          <label htmlFor="answer">Your Answer:</label>
+          <textarea
+            id="answer"
+            value={submissionText}
+            onChange={(e) => setSubmissionText(e.target.value)}
+            rows="6"
+            placeholder="Type your answer here..."
+            required
+          />
+          <button type="submit">Submit</button>
+        </form>
+      )}
+
+      {message && <p className="status-message">{message}</p>}
     </div>
   );
-}
+};
 
 export default Assignment;

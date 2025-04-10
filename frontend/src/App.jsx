@@ -8,6 +8,10 @@ import FacultyDashBoard from "./pages/FacultyDashboard";
 import LandingPage from "./pages/LandingPage";
 import CreateAssignment from "./pages/CreateAssignment";
 import Assignment from "./pages/Assignment";
+import CourseAssignments from './pages/CourseAssignments';
+import FacultyCourseAssignments from './pages/FacultyCourseAssignments';
+import FacultyAssignmentSubmissions from "./pages/FacultyAssignmentSubmissions";
+import AddQuestion from './pages/AddQuestion';
 // to be checked later if student and faculty dashboard pages work and then design these pages
 const App = () => {
   return (
@@ -25,6 +29,11 @@ const App = () => {
           <Route path="/facultydashboard" element={<FacultyDashBoard />} />
           <Route path="/create-assignment" element={<CreateAssignment />} /> 
           <Route path="/assignment/:assignmentId" element={<Assignment />} />
+          <Route path="/courses/:courseId" element={<CourseAssignments />} />
+          <Route path="/faculty-course-assignments/:courseID" element={<FacultyCourseAssignments />} />
+          <Route path="/faculty-assignment/:assignmentId" element={<FacultyAssignmentSubmissions />} />
+          <Route path="/add-question" element={<AddQuestion />} />
+
         </Routes>
       </main>
 

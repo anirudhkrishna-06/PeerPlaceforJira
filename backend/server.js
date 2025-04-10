@@ -22,7 +22,11 @@ const {
   getFacultyCourses,
   getPendingSubmissions,
   getCourseAssignments,
-  getAssignmentWithDocument
+  getAssignmentWithDocument,
+  getSubmissionByStudent,
+  getSubmissionsByAssignment,
+  updateScore,
+  addQuestionToBank
 } = require('C:/Users/aksha/peer-place-for-jira/backend/firestoreControllers.js');
 
 // Load environment variables
@@ -42,17 +46,21 @@ app.post('/api/register', registerUser);
 app.post('/api/users', addUser);
 app.post('/api/questions', uploadQuestion);
 app.post('/api/assignments', upload.array('attachments'), assignQuestion);
-app.post('/api/submissions', submitAnswer);
+app.post('/api/submitAssignment', submitAnswer);
 app.put('/api/submissions/:submissionId/evaluate', evaluateSubmission);
 app.get('/api/users', getAllUsers);
 app.get('/api/questions', getAllQuestions);
 app.get('/api/userByMail/email', getUserByEmail);
 app.get('/api/courses', getFacultyCourses);
-app.get('/api/course_assignments/:courseId', getCourseAssignments);
+app.get('/api/course_assignments/:courseID', getCourseAssignments);
 app.get('/api/submissions/pending', getPendingSubmissions);
 // Add this with your other routes
 app.get('/api/assignments/:assignmentId', getAssignmentWithDocument);
+app.get('/api/submissions/student', getSubmissionByStudent);
 // app.post('/api/assignments', createAssignment);
+app.get('/api/submissions/byAssignment/:assignmentId', getSubmissionsByAssignment);
+app.post('/api/updateScore', updateScore);
+app.post('/api/questionbank', addQuestionToBank);
 // Start server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

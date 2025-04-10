@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import "../styles/FacultyDashboard.css";
 
+
 const API_URL = "http://localhost:5000"; // Your backend URL
 
 function FacultyDashboard() {
@@ -133,22 +134,42 @@ function FacultyDashboard() {
 
       <div className="dashboard-sections">
         {/* Courses Section */}
-        <div className="section courses-section">
-          <h3>Your Courses</h3>
-          {courses.length > 0 ? (
-            <ul className="courses-list">
-              {courses.map(course => (
-                <li key={course.id} className="course-item">
-                  <h4>{course.name}</h4>
-                  <p>Code: {course.code}</p>
-                  <p>Students: {course.studentCount}</p>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>No courses assigned</p>
-          )}
+        {/* Courses Section */}
+{/* Courses Section */}
+<div className="section courses-section">
+  <h3>Your Courses</h3>
+  {courses.length > 0 ? (
+    <div className="faculty-course-grid">
+      {courses.map(course => (
+        <div key={course.courseID} className="faculty-course-card">
+          <h4>{course.courseName}</h4>
+          <p><strong>Course ID:</strong> {course.courseID}</p>
+          <p><strong>Department:</strong> {course.department || 'Information Technology'}</p>
+          <p><strong>Enrolled Students:</strong> {course.studentCount || 0}</p>
+          <div className="faculty-course-actions">
+          <button
+            onClick={() => navigate(`/faculty-course-assignments/${course.courseID}`, {
+              state: {
+                courseName: course.courseName,
+                assignments: course.assignments || [],
+              },
+            })}
+          >
+            View Assignments
+          </button>
+
+            <button onClick={() => navigate(`/faculty/course/${course.courseID}/students`)}>
+              View Students
+            </button>
+          </div>
         </div>
+      ))}
+    </div>
+  ) : (
+    <p>No courses assigned</p>
+  )}
+</div>
+
 
         {/* Pending Submissions Section */}
         <div className="section submissions-section">

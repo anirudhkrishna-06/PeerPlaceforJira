@@ -1,0 +1,124 @@
+.faculty-submissions {
+    max-width: 95%;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #f9fafb;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  .faculty-submissions h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 1.8rem;
+    color: #1f2937;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  th, td {
+    padding: 0.9rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+    vertical-align: top;
+  }
+  
+  th {
+    background-color: #f3f4f6;
+    font-weight: 600;
+    color: #374151;
+  }
+  
+  td {
+    color: #4b5563;
+    font-size: 0.95rem;
+  }
+  
+  input[type="number"], textarea {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 0.9rem;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    background-color: #fefefe;
+    resize: vertical;
+  }
+  
+  textarea {
+    min-height: 60px;
+  }
+  
+  .submission-text {
+    word-break: break-word;
+    max-width: 250px;
+  }
+  
+  button {
+    background-color: #2563eb;
+    color: #ffffff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #1d4ed8;
+  }
+  
+  /* Keep all the base styles the same above */
+
+@media (max-width: 768px) {
+    table {
+      display: block;
+      width: 100%;
+      overflow-x: auto;
+    }
+  
+    thead {
+      display: none;
+    }
+  
+    tbody {
+      display: block;
+      width: 100%;
+    }
+  
+    tr {
+      display: grid;
+      grid-template-columns: 1fr;
+      border-bottom: 1px solid #e5e7eb;
+      margin-bottom: 1rem;
+      padding: 1rem;
+      background-color: #fff;
+      border-radius: 10px;
+    }
+  
+    td {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.4rem 0;
+    }
+  
+    td::before {
+      content: attr(data-label);
+      font-weight: 600;
+      color: #374151;
+      padding-right: 1rem;
+    }
+  
+    input[type="number"], textarea {
+      max-width: 60%;
+    }
+  }
+  
