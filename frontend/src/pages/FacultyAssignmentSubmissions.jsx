@@ -63,6 +63,7 @@ function FacultyAssignmentSubmissions() {
       });
       console.log("Score update success:", response.data);
       alert('Score saved successfully!');
+      
     } catch (err) {
       console.error('Error saving score:', err.response?.data || err.message);
       alert('Failed to save score.');
@@ -90,10 +91,13 @@ function FacultyAssignmentSubmissions() {
         <tbody>
   {submissions.map((submission, index) => (
     <tr key={index}>
-      <td data-label="Student Name">{submission.studentName || 'N/A'}</td>
+      
+      {/*<td data-label="Student Name">{submission.name || 'N/A'}</td>*/}
+      <td data-label="Name">{submission.studentEmail.split('@')[0]}</td>
+
       <td data-label="Email">{submission.studentEmail}</td>
       <td data-label="Submission">{submission.answer}</td>
-      <td data-label="Submitted At">{new Date(submission.submittedAt).toLocaleString()}</td>
+      {/*<td data-label="Submitted At">{new Date(submission.submittedAt).toLocaleString()}</td>*/}
       <td data-label="Score">
         <input
           type="number"

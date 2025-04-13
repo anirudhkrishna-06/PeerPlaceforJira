@@ -71,7 +71,7 @@ const FacultyCourseAssignments = () => {
             key={assignment.assignmentId}
             className="assignment-card"
             onClick={() => handleAssignmentClick(assignment.assignmentId)}>
-          >
+          
             <h3>{assignment.title}</h3>
             <p><strong>Due:</strong> {assignment.dueDate}</p>
             <p><strong>Submissions:</strong> {assignment.submissionsCount}</p>

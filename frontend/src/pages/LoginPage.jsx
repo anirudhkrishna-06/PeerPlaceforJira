@@ -54,7 +54,9 @@ function LoginPage() {
         navigate("/StudentDashboard");
       } else if (userData.role === 'faculty') {
         navigate("/FacultyDashboard");
-      } else {
+      } else if (userData.role === 'admin') {
+        navigate("/AdminDashboard");
+      }  else {
         throw new Error("Unknown user role");
       }
 

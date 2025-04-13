@@ -3,7 +3,6 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import "../styles/FacultyDashboard.css";
 
-
 const API_URL = "http://localhost:5000"; // Your backend URL
 
 function FacultyDashboard() {
@@ -15,20 +14,16 @@ function FacultyDashboard() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Check if user is logged in
     const email = localStorage.getItem('email');
     const authToken = localStorage.getItem('authToken');
-    
+
     if (!email || !authToken) {
-      // Redirect to login if no email or token found
       navigate('/login');
       return;
     }
 
-    // Fetch user details and faculty-specific data
     const fetchFacultyData = async () => {
       try {
-        // Fetch user details
         const userResponse = await axios.get(`${API_URL}/api/userByMail/email`, {
           params: { email },
           headers: {
@@ -38,7 +33,6 @@ function FacultyDashboard() {
 
         setUserData(userResponse.data);
 
-        // Fetch courses taught by this faculty (example)
         const coursesResponse = await axios.get(`${API_URL}/api/courses`, {
           params: { facultyId: userResponse.data.id },
           headers: {
@@ -47,7 +41,6 @@ function FacultyDashboard() {
         });
         setCourses(coursesResponse.data);
 
-        // Fetch pending submissions (example)
         const submissionsResponse = await axios.get(`${API_URL}/api/submissions/pending`, {
           headers: {
             'Authorization': `Bearer ${authToken}`
@@ -66,7 +59,6 @@ function FacultyDashboard() {
     fetchFacultyData();
   }, [navigate]);
 
-  // Logout function
   const handleLogout = () => {
     localStorage.removeItem('authToken');
     localStorage.removeItem('uid');
@@ -74,22 +66,18 @@ function FacultyDashboard() {
     navigate('/login');
   };
 
-  // Function to navigate to create assignment
   const handleCreateAssignment = () => {
     navigate('/create-assignment');
   };
 
-  // Function to evaluate a submission
   const handleEvaluateSubmission = (submissionId) => {
     navigate(`/evaluate-submission/${submissionId}`);
   };
 
-  // Loading state
   if (loading) {
     return <div className="loading-container">Loading faculty dashboard...</div>;
   }
 
-  // Error state
   if (error) {
     return (
       <div className="error-container">
@@ -106,100 +94,61 @@ function FacultyDashboard() {
         <button onClick={handleLogout} className="logout-btn">Logout</button>
       </div>
 
-      <div className="user-details">
+      <div className="section profile-section">
         <h2>Your Profile</h2>
         <div className="detail-grid">
-          <div className="detail-item">
-            <strong>Name:</strong> {userData.name}
-          </div>
-          <div className="detail-item">
-            <strong>Email:</strong> {userData.email}
-          </div>
-          <div className="detail-item">
-            <strong>Role:</strong> {userData.role}
-          </div>
+          <div className="detail-item"><strong>Name:</strong> {userData.name}</div>
+          <div className="detail-item"><strong>Email:</strong> {userData.email}</div>
+          <div className="detail-item"><strong>Role:</strong> {userData.role}</div>
           {userData.department && (
-            <div className="detail-item">
-              <strong>Department:</strong> {userData.department}
-            </div>
+            <div className="detail-item"><strong>Department:</strong> {userData.department}</div>
           )}
         </div>
       </div>
 
-      <div className="faculty-actions">
-        <button onClick={handleCreateAssignment} className="action-btn">
-          Create New Assignment
-        </button>
+      <div className="section action-section">
+        <h2>Quick Actions</h2>
+        <div className="card-grid">
+          <div className="action-card clickable" onClick={handleCreateAssignment}>
+            <h3>Create New Assignment</h3>
+          </div>
+          <div className="action-card clickable" onClick={() => navigate('/question-bank')}>
+            <h3>View Question Bank</h3>
+          </div>
+        </div>
       </div>
 
-      <div className="dashboard-sections">
-        {/* Courses Section */}
-        {/* Courses Section */}
-{/* Courses Section */}
-<div className="section courses-section">
-  <h3>Your Courses</h3>
-  {courses.length > 0 ? (
-    <div className="faculty-course-grid">
-      {courses.map(course => (
-        <div key={course.courseID} className="faculty-course-card">
-          <h4>{course.courseName}</h4>
-          <p><strong>Course ID:</strong> {course.courseID}</p>
-          <p><strong>Department:</strong> {course.department || 'Information Technology'}</p>
-          <p><strong>Enrolled Students:</strong> {course.studentCount || 0}</p>
-          <div className="faculty-course-actions">
-          <button
-            onClick={() => navigate(`/faculty-course-assignments/${course.courseID}`, {
-              state: {
-                courseName: course.courseName,
-                assignments: course.assignments || [],
-              },
-            })}
-          >
-            View Assignments
-          </button>
-
-            <button onClick={() => navigate(`/faculty/course/${course.courseID}/students`)}>
-              View Students
-            </button>
+      <div className="section courses-section">
+        <h2>Your Courses</h2>
+        {courses.length > 0 ? (
+          <div className="faculty-course-grid">
+            {courses.map(course => (
+              <div key={course.courseID} className="faculty-course-card">
+                <h4>{course.courseName}</h4>
+                <p><strong>Course ID:</strong> {course.courseID}</p>
+                <p><strong>Department:</strong> {course.department || 'Information Technology'}</p>
+                <p><strong>Enrolled Students:</strong> {course.studentCount || 0}</p>
+                <div className="faculty-course-actions">
+                  <button
+                    onClick={() => navigate(`/faculty-course-assignments/${course.courseID}`, {
+                      state: {
+                        courseName: course.courseName,
+                        assignments: course.assignments || [],
+                      },
+                    })}
+                  >
+                    View Assignments
+                  </button>
+                  <button onClick={() => navigate(`/faculty/course/${course.courseID}/students`)}>
+                    View Students
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
-        </div>
-      ))}
-    </div>
-  ) : (
-    <p>No courses assigned</p>
-  )}
-</div>
-
-
-        {/* Pending Submissions Section */}
-        <div className="section submissions-section">
-        <button
-  onClick={() => navigate('/question-bank')}
-  className="action-btn"
->
-  View Question Bank
-</button>
-
-        </div>
-
-        {/* Quick Stats Section */}
-        <div className="section stats-section">
-          <h3>Quick Stats</h3>
-          <div className="stats-grid">
-            <div className="stat-card">
-              <h4>Courses</h4>
-              <p>{courses.length}</p>
-            </div>
-            <div className="stat-card">
-              <h4>Students</h4>
-              <p>{courses.reduce((acc, course) => acc + course.studentCount, 0)}</p>
-            </div>
-            <div className="stat-card">
-              <h4>Pending Evaluations</h4>
-              <p>{pendingSubmissions.length}</p>
-            </div>
-          </div>
-        </div>
+        ) : (
+          <p>No courses assigned</p>
+        )}
       </div>
     </div>
   );

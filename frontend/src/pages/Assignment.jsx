@@ -95,6 +95,7 @@ const Assignment = () => {
       <p><strong>Instructor:</strong> {assignment.facultyName}</p>
       <p><strong>Due:</strong> {assignment.dueDate.toLocaleString()}</p>
       <p><strong>Status:</strong> {assignment.status}</p>
+
       <hr />
       <h3>Description</h3>
       <pre className="assignment-description">{assignment.description}</pre>
@@ -120,8 +121,14 @@ const Assignment = () => {
         <div className="submission-box">
           <h4>Your Submission:</h4>
           <pre>{submission.answer}</pre>
-          <p><strong>Submitted At:</strong> {new Date(submission.submittedAt?.seconds ? submission.submittedAt.seconds * 1000 : submission.submittedAt).toLocaleString()}</p>
+          <p>
+            
+        {/*<strong>Submitted At:</strong> {submission.submittedAt?.date}*/}
+        </p>
+
+
           <p><strong>Score:</strong> {submission.score}</p>
+          <p><strong>Remarks:</strong> {submission.remarks}</p>
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="submission-form">

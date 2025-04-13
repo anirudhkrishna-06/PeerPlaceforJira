@@ -27,7 +27,14 @@ const {
   getSubmissionsByAssignment,
   updateScore,
   addQuestionToBank,
-  getQuestionBank
+  getQuestionBank,
+  assignQuestionsToCourse,
+  addStudent,
+  addFaculty,
+  addCourse,
+  updateStudentCourseBasedOnScore,
+  getCourseStudents,
+  getStudentProfile
 } = require('C:/Users/aksha/peer-place-for-jira/backend/firestoreControllers.js');
 
 // Load environment variables
@@ -55,7 +62,6 @@ app.get('/api/userByMail/email', getUserByEmail);
 app.get('/api/courses', getFacultyCourses);
 app.get('/api/course_assignments/:courseID', getCourseAssignments);
 app.get('/api/submissions/pending', getPendingSubmissions);
-// Add this with your other routes
 app.get('/api/assignments/:assignmentId', getAssignmentWithDocument);
 app.get('/api/submissions/student', getSubmissionByStudent);
 // app.post('/api/assignments', createAssignment);
@@ -63,6 +69,12 @@ app.get('/api/submissions/byAssignment/:assignmentId', getSubmissionsByAssignmen
 app.post('/api/updateScore', updateScore);
 app.post('/api/questionbank', addQuestionToBank);
 app.get('/api/questionbank', getQuestionBank);
+app.post('/api/questionbank/assign', assignQuestionsToCourse);
+app.post('/api/admin/addstudent', addStudent);
+app.post('/api/admin/addfaculty', addFaculty);
+app.post('/api/admin/addcourse', addCourse);
+app.get('/api/course/:courseId/students', getCourseStudents);
+app.get('/api/student/:studentEmail/profile', getStudentProfile);
 
 // Start server
 app.listen(PORT, () => {

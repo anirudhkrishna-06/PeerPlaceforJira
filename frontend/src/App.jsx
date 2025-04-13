@@ -13,8 +13,10 @@ import FacultyCourseAssignments from './pages/FacultyCourseAssignments';
 import FacultyAssignmentSubmissions from "./pages/FacultyAssignmentSubmissions";
 import AddQuestion from './pages/AddQuestion';
 import QuestionBank from './pages/QuestionBank';
+import AdminDashboard from './pages/AdminDashboard';
+import CourseStudents from './components/CourseStudents';
+import StudentProfile from './components/StudentProfile';
 
-// to be checked later if student and faculty dashboard pages work and then design these pages
 const App = () => {
   return (
     <Router> {/* Wrap the entire application with Router */}
@@ -36,7 +38,10 @@ const App = () => {
           <Route path="/faculty-assignment/:assignmentId" element={<FacultyAssignmentSubmissions />} />
           <Route path="/add-question" element={<AddQuestion />} />
           <Route path="/question-bank" element={<QuestionBank />} />
-        </Routes>
+          <Route path="/admindashboard" element={<AdminDashboard />} />
+          <Route path="/faculty/course/:courseId/students" element={<CourseStudents />} />
+          <Route path="/faculty/student/:studentEmail" element={<StudentProfile />} />
+      </Routes>
       </main>
 
       {/* Footer visible on all pages */}

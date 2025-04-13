@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import '../styles/StudentDashboard.css';
-
+import { sortAssignmentsWithPriorityQueue } from '../utils/assignmentPriorityQueue';
 const API_URL = 'http://localhost:5000';
 
 const StudentDashboard = () => {
@@ -173,28 +173,22 @@ const StudentDashboard = () => {
             </div>
 
             {selectedCourseId && (
-              <div className="assignments-grid">
-                {(courses.find(c => c.courseID === selectedCourseId)?.assignments || []).length === 0 ? (
-                  <div className="empty-state">
-                    <i className="fas fa-check-circle"></i>
-                    <p>No active assignments for this course.</p>
-                  </div>
-                ) : (
-                  courses
-                    .find(c => c.courseID === selectedCourseId)
-                    .assignments
-                    .filter(a => !a.status || a.status === 'active')
-                    .sort((a, b) => {
-                      const dateA = a.dueDate?.toDate ? a.dueDate.toDate() : new Date(a.dueDate);
-                      const dateB = b.dueDate?.toDate ? b.dueDate.toDate() : new Date(b.dueDate);
-                      return dateA - dateB;
-                    })
-                    .map(assignment => {
-                      const timeRemaining = getTimeRemaining(assignment.dueDate);
-                      const isPastDue = timeRemaining === 'Past due';
-                      const isDueSoon = !isPastDue && timeRemaining.includes('hr');
-
-                      return (
+  <div className="assignments-grid">
+    {(courses.find(c => c.courseID === selectedCourseId)?.assignments || []).length === 0 ? (
+      <div className="empty-state">
+        <i className="fas fa-check-circle"></i>
+        <p>No active assignments for this course.</p>
+      </div>
+    ) : (
+      sortAssignmentsWithPriorityQueue(
+        courses
+          .find(c => c.courseID === selectedCourseId)
+          .assignments
+          .filter(a => !a.status || a.status === 'active')
+      ).map(assignment => {
+        const timeRemaining = getTimeRemaining(assignment.dueDate);
+        const isPastDue = timeRemaining === 'Past due';
+        const isDueSoon = !isPastDue && timeRemaining.includes('hr');          return (
                         <div
                           key={assignment.assignmentId}
                           className={`assignment-card ${isPastDue ? 'past-due' : ''} ${isDueSoon ? 'due-soon' : ''}`}
