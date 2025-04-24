@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import "../styles/FacultyDashboard.css";
 
-const API_URL = "http://localhost:5000"; // Your backend URL
+const API_URL = "http://localhost:5000"; 
 
 function FacultyDashboard() {
   const [userData, setUserData] = useState(null);

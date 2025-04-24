@@ -5,6 +5,8 @@ import "../styles/Contact.css";
 const Contact = () => {
   return (
     <Section id="contact" title="Contact Us">
+      <p>Mail: samplemail@example.com</p>
+      <p>Phone number: 0123456789</p>
       <p>Feel free to reach out for more information.</p>
     </Section>
   );

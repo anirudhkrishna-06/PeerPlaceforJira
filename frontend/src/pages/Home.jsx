@@ -22,7 +22,7 @@ const Home = () => {
   }, []);
 
   return (
-    <Section id="home" title="Welcome to the Placement Cell">
+    <Section id="home" title="Welcome to PeerPlace!">
       <div className="carousel">
         {images.map((src, index) => (
           <img
@@ -38,7 +38,7 @@ const Home = () => {
           ))}
         </div>
       </div>
-      <p>Explore opportunities and resources available to you!</p>
+      <p>Let's get trained for the best jobs out there!</p>
     </Section>
   );
 };

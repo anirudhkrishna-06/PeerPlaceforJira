@@ -10,13 +10,13 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    color: #fcfcfc; 
-    font-family: "Poppins-Regular";
-    font-weight: 200;
+    color: #3f3d3d; 
+    font-family: 'Poppins';
+    font-weight: 1000;
     letter-spacing: 6px;
     overflow: hidden;
-    font-size: 100%;
-    background: none;
+    font-size: 1.5rem;
+    background: url('/home_image2.jpeg') no-repeat center center;
     margin-top: 0px;
 }
 
@@ -28,7 +28,8 @@
     top: 0;
     left: 0;
     z-index: -1;
-    background: rgba(0, 0, 0, 0.6);
+    background: url('/home_image2.jpeg') no-repeat center center;
+    background-size: cover;
 }
 
 /* Carousel Images */
@@ -40,13 +41,13 @@
     top: 0;
     left: 0;
     opacity: 0;
-    transition: opacity 1.5s ease-in-out;
-    background: rgba(0, 0, 0, 0.6);
+    background: url('/home_image1.jpeg') no-repeat center center;
+    background-size: cover;
 }
 
 /* Active Image */
 .carousel img.active {
-    opacity: 0.5;
+    opacity: 0.6;
 }
 
 /* Dark Gradient Overlay to Improve Readability */
@@ -57,6 +58,7 @@
     height: 100%;
     top: 0;
     left: 0;
+    
     opacity: 95%;
     z-index: 0;
 }
@@ -90,14 +92,15 @@
     display: inline-block;
     margin-top: 20px;
     padding: 12px 24px;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     font-weight: bold;
     color: white;
     background: #6a498f; /* Deep Amethyst */
+
     border: none;
     border-radius: 25px;
     text-decoration: none;
-    transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+    
 }
 
 .home-content .cta-button:hover {
@@ -134,19 +137,18 @@
     margin-top: 0px;
     color: white;
     font-family: "Poppins-Regular", serif;
-  }
+}
   
-  .college-info h2 {
+.college-info h2 {
     font-size: 1.5rem;
     font-weight: bold;
-  }
+}
   
-  .college-info h3 {
+.college-info h3 {
     font-size: 1.2rem;
     font-weight: 500;
-  }
+}
 
-  
 /* Responsive Design */
 @media screen and (max-width: 768px) {
     .home-content h1 {
