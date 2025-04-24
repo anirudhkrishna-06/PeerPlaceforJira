@@ -9,7 +9,7 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="nav-container">
         <div className="brand">
-          <h1>Placement Cell</h1>
+          <h1>Placement Training Portal</h1>
         </div>
 
         <div className="menu-icon" onClick={() => setMenuOpen(!menuOpen)}>

@@ -35,7 +35,7 @@ const {
   updateStudentCourseBasedOnScore,
   getCourseStudents,
   getStudentProfile
-} = require('C:/Users/aksha/peer-place-for-jira/backend/firestoreControllers.js');
+} = require('C:/Users/Anirudh/Documents/PeerPlace/backend/firestoreControllers.js');
 
 // Load environment variables
 dotenv.config();

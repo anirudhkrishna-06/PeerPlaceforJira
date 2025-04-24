@@ -3,18 +3,18 @@
 
 /* Basic Navbar Styling */
 .navbar {
-  background: linear-gradient(135deg,rgb(156, 99, 156), #6A5ACD, #8A2BE2); /* Amethyst Gradient */
-  padding: 15px 20px;
-  color: #F8E8FF;  /* Soft Lilac */
+  background: #FFF2F2; /* Light pink background as requested */
+  padding: 15px 1px;
+  color: #2D336B; /* Dark blue text as requested */
   display: flex;
   justify-content: center;
   align-items: center;
   position: sticky;
   top: 0;
-  
   z-index: 1000;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(45, 51, 107, 0.08);
   transition: all 0.3s ease-in-out;
+  border-bottom: 1px solid rgba(45, 51, 107, 0.08);
 }
 
 /* Navbar Container */
@@ -22,17 +22,30 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 90%;
-  max-width: 1200px;
+  width: 100%;
+  max-width: 1300px;
 }
 
 /* Brand Name */
 .brand h1 {
   font-size: 1.8rem;
-  font-weight: bold;
+  font-weight: 600;
   margin: 0;
-  color: #FFF;
-  letter-spacing: 1px;
+  color: #2D336B;
+  letter-spacing: 0.5px;
+  font-family: 'Forum', serif;
+  position: relative;
+}
+
+.brand h1::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 40%;
+  height: 2px;
+  background: linear-gradient(to right, #2D336B, transparent);
+  border-radius: 2px;
 }
 
 /* Navbar Links */
@@ -42,35 +55,69 @@
   gap: 25px;
   margin: 0;
   padding: 0;
+  align-items: center;
 }
 
 .nav-links li {
   display: inline-block;
 }
 
-/* Navbar Links - Modern Button Style */
+/* Navbar Links - Elegant Style */
 .nav-links a {
-  color: #FFF;
+  color: #2D336B;
   text-decoration: none;
-  font-size: 1rem;
+  font-size: 0.85rem;
   font-weight: 500;
-  padding: 10px 15px;
-  border-radius: 8px;
+  padding: 10px 10px;
+  border-radius: 4px;
   transition: all 0.3s ease-in-out;
+  position: relative;
+  font-family: 'Poppins', sans-serif;
+  letter-spacing: 0.3px;
+}
+
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: #2D336B;
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+  opacity: 0;
 }
 
 .nav-links a:hover {
-  background: rgba(255, 255, 255, 0.3);
-  backdrop-filter: blur(5px);
-  transform: translateY(-2px);
+  color: #1a2046;
+}
+
+.nav-links a:hover::after {
+  width: 80%;
+  opacity: 1;
 }
 
 /* Mobile Menu Button */
 .menu-icon {
   display: none;
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   cursor: pointer;
-  color: #FFF;
+  color: #2D336B;
+  background: none;
+  border: none;
+  padding: 0;
+  transition: transform 0.3s ease;
+}
+
+.menu-icon:hover {
+  transform: scale(1.1);
+}
+
+/* Add subtle animation to navbar on scroll */
+.navbar.scrolled {
+  padding: 10px 20px;
+  box-shadow: 0 5px 15px rgba(45, 51, 107, 0.1);
 }
 
 /* Mobile Responsive Design */
@@ -79,24 +126,64 @@
     display: none;
     flex-direction: column;
     position: absolute;
-    top: 60px;
+    top: 70px;
     left: 0;
     width: 100%;
-    background: rgba(106, 90, 205, 0.95); /* Semi-transparent Amethyst */
+    background: #FFF2F2;
     text-align: center;
     padding: 10px 0;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 8px rgba(45, 51, 107, 0.1);
+    border-top: 1px solid rgba(45, 51, 107, 0.08);
+    border-bottom: 1px solid rgba(45, 51, 107, 0.08);
   }
 
   .nav-links.active {
     display: flex;
+    animation: fadeIn 0.3s ease-in-out;
   }
 
   .nav-links li {
     padding: 12px 0;
   }
 
+  .nav-links a {
+    display: block;
+    padding: 12px 20px;
+  }
+
+  .nav-links a::after {
+    display: none;
+  }
+
+  .nav-links a:hover {
+    background: rgba(45, 51, 107, 0.06);
+  }
+
   .menu-icon {
     display: block;
   }
+}
+
+/* Animation for mobile menu */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Active link styling */
+.nav-links a.active {
+  font-weight: 600;
+  position: relative;
+}
+
+.nav-links a.active::after {
+  width: 80%;
+  opacity: 1;
+  height: 2px;
 }
